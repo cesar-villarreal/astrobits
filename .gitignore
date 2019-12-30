@@ -1,6 +1,8 @@
 astrobits/__pycache__/
 stuff/__pycache__/
+home/__pycache__/
 stuff/migrations/__pycache__/
+home/migrations/__pycache__/
 astro
 resources
 style.css
