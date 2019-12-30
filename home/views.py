@@ -1,5 +1,9 @@
 from django.shortcuts import render
 
 def indexView(request):
-	text = "BLA"
-	return render(request, 'stuff.html', {'content': text, })
+	title = "Home"
+	return render(request, 'home.html', {'title': title })
+
+def aboutView(request):
+	title = "About"
+	return render(request, 'about.html', {'title': title })
