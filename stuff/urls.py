@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
                path('astro', views.AstroView, name='astro'),
+               path('download', views.DownloadView, name='download'),	
               ]
