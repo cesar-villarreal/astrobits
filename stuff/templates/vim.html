@@ -1,2 +1,54 @@
-{{ content }}
+{% extends 'general_template.html' %}
 
+{% block content %}
+
+VIM, A TEXT EDITOR:<br><br>
+Here you have some of the basics to migrate from a classic plain-text editor (like gedit, pluma, notepad) to Vim and feel comfortable.
+Its properties allows to perform some tasks in a faster way and just with the keyboard. No need to put your hand in the touchpad (yes,
+I'm allergic to the mouse). Vim is really a hammer when programming comes to the scene. The learning curve will not be easy but
+hopefully overtime the advantages of using Vim will become clear. This text editor can be found in almost every Unix-like system so
+you would have a nearly-universal tool. Once in an astronomical observatory I was in the need to modify a text file and I could'nt
+find the graphic text editor but I had a terminal at hand and I had knowledge about Vim so my problem was solved easily.<br>
+Thank you Vim :-)<br><br><br>
+
+
+Open Vim, just key in "vim" in the terminal, the name of the new file and then hit Enter.<br><br><br>
+
+
+To start: Vim works in various modes but here we will work with four: normal, insert, command and visual<br><br>
+
+
+INSERT MODE.<br>
+The Insert mode, as suggests, works to insert text. So, at the start Vim is in the Normal mode, to get into the Insert Mode press
+the "i" key. After this you can type anything. So far, Vim seems to be a quite regular text editor.<br>
+Let's suppose you have written ten lines of text. To get back into the Normal mode press the "Esc" key. Yes, do it, press it.<br><br>
+
+NORMAL MODE.<br>
+From this mode you can access to the other modes. As you can see, in this one you can move around the text with the arrow keys but
+the best is to use the keys "h", "j", "k", "l". Why is this? Because this way you keep your fingers in the center of the keyboard.
+The key "h" moves the cursor one charachter to the left. Hit "j" to move the cursor one line down. The "k" moves the cursor one
+line up and "l" moves the cursor one charachter to the right. As can be seen, you can keep four fingers over "h", "j", "k", and
+"l" to move throught the text. To get this easier: "h" and "l" works for left and right, "j" and "k" for down and right.<br><br>
+
+This is where it all starts to get interesting.
+
+<br><br><br><br><br>
+Summary:
+<li><b>i</b>   &#160; &#160; &#160; &#160; &#160; get into the Insert mode <br>
+<li><b>Esc</b> &#160; &#160; escape to the Normal mode <br>
+<li><b>h</b>   &#160; &#160; &#160; &#160; &#160; moves the cursor one charachter to the left <br>
+<li><b>l</b>   &#160; &#160; &#160; &#160; &#160; moves the cursor one charachter to the right <br>
+<li><b>j</b>   &#160; &#160; &#160; &#160; &#160; moves the cursor one line down <br>
+<li><b>k</b>   &#160; &#160; &#160; &#160; &#160; moves the cursor one line up <br>
+<!--To moving the cursor throught the file text the-->
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
