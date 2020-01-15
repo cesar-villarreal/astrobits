@@ -5,4 +5,5 @@ urlpatterns = [
                path('astro', views.AstroView, name='astro'),
                path('download', views.DownloadView, name='download'),	
                path('vim', views.VimView, name='vim'),
+               path('photo', views.PhotoView, name='photo')
               ]

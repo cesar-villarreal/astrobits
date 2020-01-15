@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from stuff.files_list import GetFilesList
 #from django.http import HttpResponse
 
 def AstroView(request):
@@ -7,11 +6,15 @@ def AstroView(request):
 	return render(request, 'astro.html', {'title': title, })
 
 def DownloadView(request):
+	from stuff.files_list import GetFilesList
 	title = "Download"
-	files_list = GetFilesList
 	return render(request, 'download.html', {'title': title,
-                                             'files_list': files_list})
+                                             'files_list': GetFilesList})
 
 def VimView(request):
 	title = "VIM"
 	return render(request, 'vim.html', {'title': title,})
+
+def PhotoView(request):
+	title = "Photography"
+	return render(request, 'photo.html', {'title': title})
