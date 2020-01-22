@@ -1,9 +1,7 @@
-astrobits/__pycache__/*
+astrobits/__pycache__/
 astrobits/settings.py
-stuff/__pycache__/*
-home/__pycache__/*
-stuff/migrations/__pycache__/*
-home/migrations/__pycache__/*
-astro
-resources
+stuff/__pycache__/
+home/__pycache__/
+stuff/migrations/__pycache__/
+home/migrations/__pycache__/
 
