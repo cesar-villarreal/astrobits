@@ -1,0 +1,29 @@
+{% extends 'general_template.html' %}
+
+{% block content %}
+{% if email_success %}
+	<h1> {{ email_sucess }} </h1>
+{% endif %}
+
+
+
+Please, fill the form so I can get in touch with you.
+<br>
+<br>
+<form action="{% url 'contact' %}" method="post">
+	{% csrf_token %}
+	{% for field in SendMail %}
+		<div class="form-group">
+			<label for="{{ field.name }}"> {{ field.label }} </label>
+			<br>
+			{{ field }}
+		</div>
+	{% endfor %}
+	<button type="submit" class="btn btn-primary bts-sm">Send mail</button>
+</form>
+
+
+
+
+{% endblock %}
+
