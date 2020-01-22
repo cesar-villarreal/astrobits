@@ -2,12 +2,10 @@
 
 {% block content %}
 {% if email_success %}
-	<h1> {{ email_sucess }} </h1>
+	<h1> {{ email_success }} </h1>
 {% endif %}
 
-
-
-Please, fill the form so I can get in touch with you.
+Please, fill the form so I can get in touch with you. An E-Mail with your information will be sent to you as confirmation.
 <br>
 <br>
 <form action="{% url 'contact' %}" method="post">
