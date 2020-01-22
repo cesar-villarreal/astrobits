@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.core.mail import send_mail
+from django.conf import settings
 from .forms import SendMail
 
 def indexView(request):
@@ -17,7 +18,7 @@ def ContactView(request):
 		send_mail(request.POST.get('subject'),
                   request.POST.get('message'),
                   "astro@cvillarreal.xyz",
-                  ["csr.astro@gmail.com"])	
+                  [request.POST.get("contact_mail"), "astro@cvillarreal.xyz"])	
 
 		return render(request, 'contact.html', {'title': title,
                                                 'SendMail': SendMail,
