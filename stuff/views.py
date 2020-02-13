@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Picture
 import requests
 from bs4 import BeautifulSoup
 #from django.http import HttpResponse
@@ -27,4 +28,6 @@ def VimView(request):
 
 def PhotoView(request):
 	title = "Photography"
-	return render(request, 'photo.html', {'title': title})
+	pictures = Picture.objects.all()
+	return render(request, 'photo.html', {'title': title,
+	                                                                'pictures': pictures})
