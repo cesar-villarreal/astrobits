@@ -16,6 +16,8 @@ body{margin: 1% 1% 1% 1%;
              padding:0.5%;
              font-size:normal;
              margin-bottom:0.9%;}
+             
+img {border-radius:5%;}
 
 a:visited{color:gray}
 a:link{color:#bfbfbf}

@@ -2,16 +2,17 @@
 
 {% block content %}
 
-Here you find some pictures I have taken on trips or astronomic observation campaign.
+Here you find some pictures I have taken on trips or astronomic observation campaigns.
 
 <br>
 <br>
 <br>
 
 {% for picture in pictures %}
+	<a href="http://{{ picture.picture_url }}"><img src="http://{{ picture.picture_url }}"  width="10%"/></a>
+	<br>
 	{{ picture.picture_description }}
 	<br>
-	{{ picture.picture_url }}
 {% endfor %}
 
 {% endblock %}
