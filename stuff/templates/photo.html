@@ -8,11 +8,20 @@ Here you find some pictures I have taken on trips or astronomic observation camp
 <br>
 <br>
 
-{% for picture in pictures %}
-	<a href="http://{{ picture.picture_url }}"><img src="http://{{ picture.picture_url }}"  width="10%"/></a>
-	<br>
-	{{ picture.picture_description }}
-	<br>
-{% endfor %}
+<table border="1" style="text-align: center;">
+	<tr>
+	{% for picture in pictures %}
+		<td><img src="http://{{ picture.picture_url }}"  width="30%"/><br><br>{{ picture.picture_description }}</td>
+		{% if forloop.last %}
+			</tr>
+		{% else %}
+			{% if forloop.counter|divisibleby:"3" %}
+				</tr>
+				<tr>
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+</table>
+
 
 {% endblock %}
