@@ -8,10 +8,10 @@ Here you find some pictures I have taken on trips or astronomic observation camp
 <br>
 <br>
 
-<table border="1" style="text-align: center;">
+<table border="0" style="text-align:center; width:100%" cellpadding="10">
 	<tr>
 	{% for picture in pictures %}
-		<td><img src="http://{{ picture.picture_url }}"  width="30%"/><br><br>{{ picture.picture_description }}</td>
+		<td><img src="http://{{ picture.picture_url }}"  width="100"/><br><br>{{ picture.picture_description }}</td>
 		{% if forloop.last %}
 			</tr>
 		{% else %}
