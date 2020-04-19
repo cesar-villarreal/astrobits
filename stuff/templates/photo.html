@@ -11,7 +11,7 @@ Here you find some pictures I have taken on trips or astronomic observation camp
 <table border="1" style="text-align:center; width:100%" cellpadding="10">
 	<tr>
 	{% for picture in pictures %}
-		<td><a href="http://{{ picture.picture_url }}"}><img src="http://{{ picture.picture_thumbnail }}"  width="100"/></a><br><br>{{ picture.picture_description }}</td>
+		<td><a href="http://{{ picture.picture_url }}"}><img src="http://{{ picture.picture_thumbnail }}" style="width:65%;height:auto;max-width:200px"/></a><br><br>{{ picture.picture_description }}</td>
 		{% if forloop.last %}
 			</tr>
 		{% else %}
