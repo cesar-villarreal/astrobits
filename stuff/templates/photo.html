@@ -2,7 +2,7 @@
 
 {% block content %}
 
-Here you find some pictures I have taken on trips or astronomic observation campaigns.
+Here you find some pictures I have taken on trips or astronomic observation campaigns. Those observatorys are the San Pedro Mártir National Observatory at Baja California (SPM), México and the Tonantzintla National Observatory at Puebla (TNT), México, both belongin to the National Autonomous University of México. 
 
 <br>
 <br>
@@ -11,11 +11,11 @@ Here you find some pictures I have taken on trips or astronomic observation camp
 <table border="1" style="text-align:center; width:100%" cellpadding="10">
 	<tr>
 	{% for picture in pictures %}
-		<td><a href="http://{{ picture.picture_url }}"}><img src="http://{{ picture.picture_thumbnail }}" style="width:65%;height:auto;max-width:200px"/></a><br><br>{{ picture.picture_description }}</td>
+		<td><a href="http://{{ picture.picture_url }}"}><img src="http://{{ picture.picture_thumbnail }}" style="width:65%;height:auto;max-width:200px"/></a><br><br>{{ forloop.counter }}. {{ picture.picture_description }}</td>
 		{% if forloop.last %}
 			</tr>
 		{% else %}
-			{% if forloop.counter|divisibleby:"3" %}
+			{% if forloop.counter|divisibleby:"4" %}
 				</tr>
 				<tr>
 			{% endif %}
