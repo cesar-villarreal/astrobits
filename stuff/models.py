@@ -24,16 +24,16 @@ class Picture(models.Model):
         #db_table = 'circuits'
 
 
-#class Constructorresults(models.Model):
-    #constructorresultsid = models.AutoField(db_column='constructorResultsId', primary_key=True)  # Field name made lowercase.
-    #raceid = models.IntegerField(db_column='raceId')  # Field name made lowercase.
-    #constructorid = models.IntegerField(db_column='constructorId')  # Field name made lowercase.
-    #points = models.FloatField(blank=True, null=True)
-    #status = models.CharField(max_length=255, blank=True, null=True)
+class Constructorresults(models.Model):
+    constructorresultsid = models.AutoField(db_column='constructorResultsId', primary_key=True)  # Field name made lowercase.
+    raceid = models.IntegerField(db_column='raceId')  # Field name made lowercase.
+    constructorid = models.IntegerField(db_column='constructorId')  # Field name made lowercase.
+    points = models.FloatField(blank=True, null=True)
+    status = models.CharField(max_length=255, blank=True, null=True)
 
-    #class Meta:
-        #managed = True
-        #db_table = 'constructorResults'
+    class Meta:
+        managed = True
+        db_table = 'constructorResults'
 
 
 #class Constructorstandings(models.Model):
@@ -50,16 +50,16 @@ class Picture(models.Model):
         #db_table = 'constructorStandings'
 
 
-#class Constructors(models.Model):
-    #constructorid = models.AutoField(db_column='constructorId', primary_key=True)  # Field name made lowercase.
-    #constructorref = models.CharField(db_column='constructorRef', max_length=255)  # Field name made lowercase.
-    #name = models.CharField(unique=True, max_length=255)
-    #nationality = models.CharField(max_length=255, blank=True, null=True)
-    #url = models.CharField(max_length=255)
+class Constructors(models.Model):
+    constructorid = models.AutoField(db_column='constructorId', primary_key=True)  # Field name made lowercase.
+    constructorref = models.CharField(db_column='constructorRef', max_length=255)  # Field name made lowercase.
+    name = models.CharField(unique=True, max_length=255)
+    nationality = models.CharField(max_length=255, blank=True, null=True)
+    url = models.CharField(max_length=255)
 
-    #class Meta:
-        #managed = True
-        #db_table = 'constructors'
+    class Meta:
+        managed = True
+        db_table = 'constructors'
 
 
 #class Driverstandings(models.Model):

@@ -4,19 +4,15 @@
 
 
 {% block content %}
-<link href="{% static 'css/bokeh-1.0.4.min.css %}" rel="stylesheet" type="text/css">
-<link href="{% static 'css/bokeh-widgets-1.0.4.min.css %}" rel="stylesheet" type="text/css">
 <script src="{% static 'js/bokeh-2.2.3.min.js' %}"></script>
 <script src="{% static 'js/bokeh-widgets-2.2.3.min.js' %}"></script>
 
-{{ script | safe }}
 
-{{ div | safe }}
 
-{% for driver in drivers %}
-	{{ driver.driverid }} {{ driver.forename }} {{ driver.surname }}
-	<br>
-{% endfor %}
+{{ script_dnats | safe }}
+{{ script_cnats | safe }}
+
+{{ div_dnats | safe }} {{ div_cnats | safe }}
 
 
 
