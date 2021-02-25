@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Picture, Drivers, Constructors
+from .models import Picture, Drivers, Constructors, Driverstandings
 
 import requests
 
@@ -9,8 +9,10 @@ from bokeh.plotting import figure
 from bokeh.embed import components
 from bokeh.transform import cumsum
 from bokeh.palettes import viridis 
+from bokeh.models import SingleIntervalTicker, HoverTool, ColumnDataSource
+from bokeh.layouts import row
 
-from pandas import DataFrame
+from pandas import DataFrame, to_datetime
 from math import pi
 
 
@@ -46,88 +48,126 @@ def PhotoView(request):
 
 def F1View(request):
 	title = "F1 Statistics"
-	
-	dnats = Drivers.objects.using('f1').raw('SELECT driverId,\
-		nationality, COUNT(nationality) AS n_nat FROM drivers\
-		GROUP BY nationality ORDER BY n_nat')
+
+	raw_query = 'SELECT driverId, nationality, COUNT(nationality) AS n_nat\
+		FROM drivers GROUP BY nationality ORDER BY n_nat'
+	dnats = Drivers.objects.using('f1').raw(raw_query)
 	dnats = DataFrame([item.__dict__ for item in dnats])\
 		.drop(columns=['_state','driverid'])
-	dnats['percent'] = 100*(dnats['n_nat']/\
-		dnats['n_nat'].sum())
-	dnats['angle'] = dnats['n_nat']/dnats['n_nat']\
-		.sum()*2*pi
+	dnats['percent'] = 100*(dnats['n_nat']/dnats['n_nat'].sum())
+	dnats['angle'] = dnats['n_nat']/dnats['n_nat'].sum()*2*pi
 	dnats['color'] = list(viridis(41))
-	
-	plot_dnats = figure(plot_height = 300,
-		plot_width = 300,
+
+	plot_dnats = figure(plot_height = 300, plot_width = 300,
 		title = "F1 Drivers Nationalities",
+		title_location = 'below',
 		toolbar_location = None,
 		tools = "hover",
 		tooltips = "@nationality: @n_nat, @percent%",
 		x_range = (-1.0, 1.0))
-	
+
+	plot_dnats.title.align = 'center'
 	plot_dnats.xaxis.visible = False
 	plot_dnats.yaxis.visible = False
 	plot_dnats.xgrid.visible = False
 	plot_dnats.ygrid.visible = False
-	plot_dnats.background_fill_color = 'black'
+	#plot_dnats.background_fill_color = 'black'
+	#plot_dnats.border_fill_color = 'black'
 	#plot.toolbar.autohide = True
 	#plot.sizing_mode = "scale_width"
-	
-	plot_dnats.wedge(x = 0, y = 0,
-		radius = 0.9,
+
+	plot_dnats.wedge(x = 0, y = 0, radius = 0.9,
 		start_angle = cumsum('angle', include_zero = True),
 		end_angle = cumsum('angle'),
 		line_color = 'black',
 		fill_color = 'color',
 		#legend_field = 'nationality',
 		source = dnats)
-	script_dnats, div_dnats = components(plot_dnats)
-	
-	cnats = Constructors.objects.using('f1').raw('SELECT constructorId,\
-		nationality, COUNT(nationality) AS n_nat FROM constructors\
-		GROUP BY nationality ORDER BY n_nat DESC')
-	cnats = DataFrame([item.__dict__ for item in cnats]).drop(columns=['_state'])
-	cnats['percent'] = 100*(cnats['n_nat']/\
-	cnats['n_nat'].sum())
-	cnats['angle'] = cnats['n_nat']/cnats['n_nat']\
-		.sum()*2*pi
+	script_dnats, div_dnats = components(plot_dnats, theme = 'dark_minimal')
+
+	raw_query = 'SELECT constructorId, nationality, COUNT(nationality) AS n_nat\
+		FROM constructors GROUP BY nationality ORDER BY n_nat DESC'
+	cnats = Constructors.objects.using('f1').raw(raw_query)
+	cnats = DataFrame([item.__dict__ for item in cnats]).\
+		drop(columns=['_state'])
+	cnats['percent'] = 100*(cnats['n_nat']/cnats['n_nat'].sum())
+	cnats['angle'] = cnats['n_nat']/cnats['n_nat'].sum()*2*pi
 	cnats['color'] = list(viridis(24))
-	
-	plot_cnats = figure(plot_height = 300,
-		plot_width = 300,
+
+	plot_cnats = figure(plot_height = 300, plot_width = 300,
 		title = "F1 Constructors Nationalities",
+		title_location = 'below',
 		toolbar_location = None,
 		tools = "hover",
 		tooltips = "@nationality: @n_nat, @percent%",
 		x_range = (-1.0, 1.0))
-	
+
+	plot_cnats.title.align = 'center'
 	plot_cnats.xaxis.visible = False
 	plot_cnats.yaxis.visible = False
 	plot_cnats.xgrid.visible = False
 	plot_cnats.ygrid.visible = False
-	plot_cnats.background_fill_color = 'black'
+	#plot_cnats.background_fill_color = 'black'
+	#plot_cnats.border_fill_color = 'black'
 	#plot.toolbar.autohide = True
 	#plot.sizing_mode = "scale_width"
-	
-	plot_cnats.wedge(x = 0, y = 0,
-		radius = 0.9,
+
+	plot_cnats.wedge(x = 0, y = 0, radius = 0.9,
 		start_angle = cumsum('angle', include_zero = True),
 		end_angle = cumsum('angle'),
 		line_color = 'black',
 		fill_color = 'color',
 		#legend_field = 'nationality',
 		source = cnats)
-	script_cnats, div_cnats = components(plot_cnats)
-	
+	script_cnats, div_cnats = components(plot_cnats, theme = 'dark_minimal')
+
 	#cnats = Constructorresults.objects.using('f1').raw('SELECT constructorResultsId,\
 		#C.constructorId, points, name, SUM(points) as np FROM constructorResults R\
 		#INNER JOIN constructors C ON R.constructorId = C.constructorId\
 		#GROUP BY constructorId ORDER BY np DESC')
 	#cnats = DataFrame([item.__dict__ for item in cnats])\
 		#.drop(columns=['_state', 'constructorresultsid', 'points'])
+
+	### SERGIO #########################################################################################################
+	forename = '"Sergio"' 
+	surname = '"Perez"'
+	raw_query = 'SELECT driverId FROM drivers\
+		WHERE forename = %(forename)s AND surname = %(surname)s'
+	driver_id = Drivers.objects.using('f1').raw(raw_query %locals())[0].driverid
 	
+	raw_query = 'SELECT * FROM driverStandings S INNER JOIN races R\
+		ON S.raceId = R.raceId WHERE driverId = %(driver_id)i'
+	driver_races = Driverstandings.objects.using('f1').raw(raw_query %locals())
+	driver_races = DataFrame([item.__dict__ for item in driver_races]).\
+		drop(columns='_state')
+	
+	cds = ColumnDataSource(driver_races)
+	
+	plot_points = figure(plot_height = 300, plot_width = 300,
+		title = 'Position Vs Time for %(forename)s %(surname)s' %locals(),
+		title_location = 'below',
+		x_axis_type='datetime',
+		toolbar_location = None,)
+	plot_points.title.align = "center"
+	#plot_points.title.text_color = "white"
+	#plot_points.background_fill_color = 'black'
+	#plot_points.border_fill_color = 'black'
+	
+	hover = HoverTool(tooltips = [('Date','@date{%Y-%m-%d}'),
+		('Position', '@position{int}')], formatters = {'@date': 'datetime'})
+	plot_points.add_tools(hover)
+	plot_points.y_range.flipped = True
+	plot_points.xaxis.major_label_orientation = 45
+	plot_points.xaxis[0].ticker.desired_num_ticks =\
+		int((driver_races['date'].max() - driver_races['date'].min()).\
+		days/365.25)
+	
+	plot_points.scatter('date', 'position', source=cds)
+	script_points, div_points = components(plot_points, theme = 'dark_minimal')
+
 	return render(request, 'f1.html', {'script_dnats': script_dnats,
 									   'div_dnats': div_dnats,
 		                               'script_cnats': script_cnats,
-									   'div_cnats': div_cnats})
+									   'div_cnats': div_cnats,
+									   'script_points': script_points,
+									   'div_points': div_points})

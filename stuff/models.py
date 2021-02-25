@@ -62,18 +62,18 @@ class Constructors(models.Model):
         db_table = 'constructors'
 
 
-#class Driverstandings(models.Model):
-    #driverstandingsid = models.AutoField(db_column='driverStandingsId', primary_key=True)  # Field name made lowercase.
-    #raceid = models.IntegerField(db_column='raceId')  # Field name made lowercase.
-    #driverid = models.IntegerField(db_column='driverId')  # Field name made lowercase.
-    #points = models.FloatField()
-    #position = models.IntegerField(blank=True, null=True)
-    #positiontext = models.CharField(db_column='positionText', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    #wins = models.IntegerField()
+class Driverstandings(models.Model):
+    driverstandingsid = models.AutoField(db_column='driverStandingsId', primary_key=True)  # Field name made lowercase.
+    raceid = models.IntegerField(db_column='raceId')  # Field name made lowercase.
+    driverid = models.IntegerField(db_column='driverId')  # Field name made lowercase.
+    points = models.FloatField()
+    position = models.IntegerField(blank=True, null=True)
+    positiontext = models.CharField(db_column='positionText', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    wins = models.IntegerField()
 
-    #class Meta:
-        #managed = True
-        #db_table = 'driverStandings'
+    class Meta:
+        managed = True
+        db_table = 'driverStandings'
 
 
 class Drivers(models.Model):
@@ -137,19 +137,19 @@ class Drivers(models.Model):
         #db_table = 'qualifying'
 
 
-#class Races(models.Model):
-    #raceid = models.AutoField(db_column='raceId', primary_key=True)  # Field name made lowercase.
-    #year = models.IntegerField()
-    #round = models.IntegerField()
-    #circuitid = models.IntegerField(db_column='circuitId')  # Field name made lowercase.
-    #name = models.CharField(max_length=255)
-    #date = models.DateField()
-    #time = models.TimeField(blank=True, null=True)
-    #url = models.CharField(unique=True, max_length=255, blank=True, null=True)
+class Races(models.Model):
+    raceid = models.AutoField(db_column='raceId', primary_key=True)  # Field name made lowercase.
+    year = models.IntegerField()
+    round = models.IntegerField()
+    circuitid = models.IntegerField(db_column='circuitId')  # Field name made lowercase.
+    name = models.CharField(max_length=255)
+    date = models.DateField()
+    time = models.TimeField(blank=True, null=True)
+    url = models.CharField(unique=True, max_length=255, blank=True, null=True)
 
-    #class Meta:
-        #managed = True
-        #db_table = 'races'
+    class Meta:
+        managed = True
+        db_table = 'races'
 
 
 #class Results(models.Model):
