@@ -71,10 +71,7 @@ def F1View(request):
 	plot_dnats.yaxis.visible = False
 	plot_dnats.xgrid.visible = False
 	plot_dnats.ygrid.visible = False
-	#plot_dnats.background_fill_color = 'black'
-	#plot_dnats.border_fill_color = 'black'
 	#plot.toolbar.autohide = True
-	#plot.sizing_mode = "scale_width"
 
 	plot_dnats.wedge(x = 0, y = 0, radius = 0.9,
 		start_angle = cumsum('angle', include_zero = True),
@@ -83,7 +80,6 @@ def F1View(request):
 		fill_color = 'color',
 		#legend_field = 'nationality',
 		source = dnats)
-	script_dnats, div_dnats = components(plot_dnats, theme = 'dark_minimal')
 
 	raw_query = 'SELECT constructorId, nationality, COUNT(nationality) AS n_nat\
 		FROM constructors GROUP BY nationality ORDER BY n_nat DESC'
@@ -107,10 +103,7 @@ def F1View(request):
 	plot_cnats.yaxis.visible = False
 	plot_cnats.xgrid.visible = False
 	plot_cnats.ygrid.visible = False
-	#plot_cnats.background_fill_color = 'black'
-	#plot_cnats.border_fill_color = 'black'
 	#plot.toolbar.autohide = True
-	#plot.sizing_mode = "scale_width"
 
 	plot_cnats.wedge(x = 0, y = 0, radius = 0.9,
 		start_angle = cumsum('angle', include_zero = True),
@@ -119,7 +112,6 @@ def F1View(request):
 		fill_color = 'color',
 		#legend_field = 'nationality',
 		source = cnats)
-	script_cnats, div_cnats = components(plot_cnats, theme = 'dark_minimal')
 
 	#cnats = Constructorresults.objects.using('f1').raw('SELECT constructorResultsId,\
 		#C.constructorId, points, name, SUM(points) as np FROM constructorResults R\
@@ -143,15 +135,12 @@ def F1View(request):
 	
 	cds = ColumnDataSource(driver_races)
 	
-	plot_points = figure(plot_height = 300, plot_width = 300,
+	plot_points = figure(plot_height = 300, plot_width = 600,
 		title = 'Position Vs Time for %(forename)s %(surname)s' %locals(),
 		title_location = 'below',
 		x_axis_type='datetime',
 		toolbar_location = None,)
 	plot_points.title.align = "center"
-	#plot_points.title.text_color = "white"
-	#plot_points.background_fill_color = 'black'
-	#plot_points.border_fill_color = 'black'
 	
 	hover = HoverTool(tooltips = [('Date','@date{%Y-%m-%d}'),
 		('Position', '@position{int}')], formatters = {'@date': 'datetime'})
@@ -163,11 +152,11 @@ def F1View(request):
 		days/365.25)
 	
 	plot_points.scatter('date', 'position', source=cds)
+	
+	script_nats , div_nats = components(row(plot_cnats, plot_dnats), theme = 'dark_minimal')
 	script_points, div_points = components(plot_points, theme = 'dark_minimal')
-
-	return render(request, 'f1.html', {'script_dnats': script_dnats,
-									   'div_dnats': div_dnats,
-		                               'script_cnats': script_cnats,
-									   'div_cnats': div_cnats,
+	
+	return render(request, 'f1.html', {'script_nats': script_nats,
+									   'div_nats': div_nats,
 									   'script_points': script_points,
 									   'div_points': div_points})
