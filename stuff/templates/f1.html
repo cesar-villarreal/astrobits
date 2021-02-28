@@ -1,18 +1,18 @@
 {% extends 'general_template.html' %}
+
 {% load static %}
 
-
-
 {% block content %}
+
 <script src="{% static 'js/bokeh-2.2.3.min.js' %}"></script>
 <script src="{% static 'js/bokeh-widgets-2.2.3.min.js' %}"></script>
 
 
 {{ script_nats | safe }}
-{{ script_points | safe }}
+{{ script_driver | safe }}
 
 <center> {{ div_nats | safe }} </center>
-<center> {{ div_points | safe }} </center>
+<center> {{ div_driver | safe }} </center>
 
 {% endblock %}
 
