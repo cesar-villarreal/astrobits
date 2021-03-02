@@ -2,6 +2,8 @@ from bokeh.plotting import figure
 from bokeh.transform import cumsum
 from bokeh.palettes import viridis 
 from bokeh.models import ColumnDataSource, HoverTool, CustomJS, Select
+from bokeh.embed import components
+from bokeh.layouts import row, column
 from pandas import DataFrame, to_datetime
 from math import pi
 
@@ -79,24 +81,28 @@ def cnats(Constructors):
 	
 	return plot_cnats
 
+def dropdown_drivers(Drivers):
+	raw_query = 'SELECT driverId, forename, surname FROM drivers ORDER BY forename'
+	drivers_names = Drivers.objects.using('f1').raw(raw_query)
+	drivers_names = DataFrame([item.__dict__ for item in drivers_names]).\
+				   drop(columns='_state')
+	drivers_names['name'] = drivers_names['forename'] + ' ' + drivers_names['surname']
+	
+	return Select(options=drivers_names['name'].to_list(),
+                  width = 200)
+
 def driver_position(Drivers, Driverstandings):
-	forename = '"Sergio"'
-	surname = '"Perez"'
-	
-	raw_query = 'SELECT driverId FROM drivers\
-		WHERE forename = %(forename)s AND surname = %(surname)s'
-	driver_id = Drivers.objects.using('f1').raw(raw_query %locals())[0].driverid
-	
-	raw_query = 'SELECT * FROM driverStandings S INNER JOIN races R\
-		ON S.raceId = R.raceId WHERE driverId = 815'
+	raw_query = 'SELECT driverStandingsId, S.raceId, position, driverId, R.date\
+	             FROM driverStandings S INNER JOIN races R ON S.raceId = R.raceId'
 	driver_races = Driverstandings.objects.using('f1').raw(raw_query %locals())
 	driver_races = DataFrame([item.__dict__ for item in driver_races]).\
 		drop(columns='_state')
-	
-	cds = ColumnDataSource(driver_races)
+	print(driver_races)
+	cds0 = ColumnDataSource(driver_races)
+	cds1 = ColumnDataSource(driver_races)
 	
 	plot_driver = figure(plot_height = 300, plot_width = 600,
-		title = 'Position Vs Time for %(forename)s %(surname)s' %locals(),
+		title = 'Position Vs Time',
 		title_location = 'below',
 		x_axis_type='datetime',
 		tools="pan,wheel_zoom,box_zoom,reset",
@@ -107,34 +113,35 @@ def driver_position(Drivers, Driverstandings):
 	hover = HoverTool(tooltips = [('Date','@date{%Y-%m-%d}'),
 								  ('Position', '@position{int}')],
                                   formatters = {'@date': 'datetime'})
-	
 	plot_driver.add_tools(hover)
 	plot_driver.sizing_mode = 'scale_width'
 	plot_driver.title.align = "center"
 	plot_driver.y_range.flipped = True
 	plot_driver.xaxis.major_label_orientation = 45
-	plot_driver.xaxis[0].ticker.desired_num_ticks =\
-		int((driver_races['date'].max() - driver_races['date'].min()).\
-		days/365.25)
+	#plot_driver.xaxis[0].ticker.desired_num_ticks = 10
 	
-	plot_driver.scatter('date', 'position', source=cds)
+	plot_driver.scatter('date', 'position', source=cds0)
 	
-	return plot_driver
+	callback = CustomJS(args = dict(cds0 = cds0, cds1 = cds1), code = """
+						var dropdown_value = cb_obj.value;
 
-def dropdown_drivers(Drivers):
-	raw_query = 'SELECT driverId, forename, surname FROM drivers ORDER BY forename'
-	drivers_names = Drivers.objects.using('f1').raw(raw_query)
-	drivers_names = DataFrame([item.__dict__ for item in drivers_names]).\
-				   drop(columns='_state')
-	drivers_names['name'] = drivers_names['forename'] + ' ' + drivers_names['surname']
-	
-	return Select(title="Driver",
-                  options=drivers_names['name'].to_list(),
-                  width = 200)
+						var data0 = cds0.data;
+						var data1 = cds1.data;
 
-#cnats = Constructorresults.objects.using('f1').raw('SELECT constructorResultsId,\
-	#C.constructorId, points, name, SUM(points) as np FROM constructorResults R\
-	#INNER JOIN constructors C ON R.constructorId = C.constructorId\
-	#GROUP BY constructorId ORDER BY np DESC')
-#cnats = DataFrame([item.__dict__ for item in cnats])\
-	#.drop(columns=['_state', 'constructorresultsid', 'points'])
+						data0['date'] = []
+						data0['position'] = []
+
+						for (var i = 0; i <= 32924; i++){
+							if ( data1['driverid'][i] == 815 ){
+								data0['date'].push(data1['date'][i])
+								data0['position'].push(data1['position'][i])
+							}
+						}
+						
+						cds0.change.emit();
+                    
+                     """)
+	dropdown = dropdown_drivers(Drivers)
+	dropdown.js_on_change('value', callback)
+	return components(column(dropdown, plot_driver), theme='dark_minimal')
+
