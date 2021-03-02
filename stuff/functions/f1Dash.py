@@ -1,9 +1,10 @@
 from bokeh.plotting import figure
 from bokeh.transform import cumsum
 from bokeh.palettes import viridis 
-from bokeh.models import HoverTool, ColumnDataSource
+from bokeh.models import ColumnDataSource, HoverTool, CustomJS, Select
 from pandas import DataFrame, to_datetime
 from math import pi
+
 
 
 def dnats(Drivers):
@@ -24,6 +25,7 @@ def dnats(Drivers):
 		tooltips = "@nationality: @n_nat, @percent%",
 		x_range = (-1.0, 1.0))
 
+	plot_dnats.sizing_mode = 'scale_both'
 	plot_dnats.title.align = 'center'
 	plot_dnats.xaxis.visible = False
 	plot_dnats.yaxis.visible = False
@@ -59,6 +61,7 @@ def cnats(Constructors):
 		tooltips = "@nationality: @n_nat, @percent%",
 		x_range = (-1.0, 1.0))
 
+	plot_cnats.sizing_mode = 'scale_both'
 	plot_cnats.title.align = 'center'
 	plot_cnats.xaxis.visible = False
 	plot_cnats.yaxis.visible = False
@@ -85,7 +88,7 @@ def driver_position(Drivers, Driverstandings):
 	driver_id = Drivers.objects.using('f1').raw(raw_query %locals())[0].driverid
 	
 	raw_query = 'SELECT * FROM driverStandings S INNER JOIN races R\
-		ON S.raceId = R.raceId WHERE driverId = %(driver_id)i'
+		ON S.raceId = R.raceId WHERE driverId = 815'
 	driver_races = Driverstandings.objects.using('f1').raw(raw_query %locals())
 	driver_races = DataFrame([item.__dict__ for item in driver_races]).\
 		drop(columns='_state')
@@ -105,8 +108,9 @@ def driver_position(Drivers, Driverstandings):
 								  ('Position', '@position{int}')],
                                   formatters = {'@date': 'datetime'})
 	
-	plot_driver.title.align = "center"
 	plot_driver.add_tools(hover)
+	plot_driver.sizing_mode = 'scale_width'
+	plot_driver.title.align = "center"
 	plot_driver.y_range.flipped = True
 	plot_driver.xaxis.major_label_orientation = 45
 	plot_driver.xaxis[0].ticker.desired_num_ticks =\
@@ -117,6 +121,16 @@ def driver_position(Drivers, Driverstandings):
 	
 	return plot_driver
 
+def dropdown_drivers(Drivers):
+	raw_query = 'SELECT driverId, forename, surname FROM drivers ORDER BY forename'
+	drivers_names = Drivers.objects.using('f1').raw(raw_query)
+	drivers_names = DataFrame([item.__dict__ for item in drivers_names]).\
+				   drop(columns='_state')
+	drivers_names['name'] = drivers_names['forename'] + ' ' + drivers_names['surname']
+	
+	return Select(title="Driver",
+                  options=drivers_names['name'].to_list(),
+                  width = 200)
 
 #cnats = Constructorresults.objects.using('f1').raw('SELECT constructorResultsId,\
 	#C.constructorId, points, name, SUM(points) as np FROM constructorResults R\
