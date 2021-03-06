@@ -1,16 +1,47 @@
 from django.shortcuts import render
 from .models import Picture, Drivers, Constructors, Driverstandings
+from .forms import julianDateForm, dateJulianForm
 import requests
+
 from bs4 import BeautifulSoup
-from .functions.f1Dash import dnats, cnats, driver_position, dropdown_drivers
 from bokeh.embed import components
-from bokeh.layouts import row, column
-#from django.http import HttpResponse
+from bokeh.layouts import row
+from .functions.f1Dash import dnats, cnats, driver_position
+from .functions.jd import date_jd, jd_date
+
 
 
 def AstroView(request):
 	title = "Astro"
-	return render(request, 'astro.html', {'title': title})
+	julian_date_form = julianDateForm()
+	date_julian_form = dateJulianForm()
+	
+	
+	if request.method == 'POST':
+
+		if request.POST.__contains__('julian_form'):
+			print('julian form')
+			to_jd = request.POST['julian_form']
+			julian_date = date_jd(to_jd)
+			
+			return render(request, 'astro.html', {'title': title,
+                                                  'julian_date_form': julian_date_form,
+                                                  'date_julian_form': date_julian_form,
+                                                  'julian_date': julian_date})
+
+		if request.POST.__contains__('date_form'):
+			print('date form')
+			to_date = float(request.POST['date_form'])
+			date_julian = jd_date(to_date)
+		
+			return render(request, 'astro.html', {'title': title,
+                                                  'julian_date_form': julian_date_form,
+                                                  'date_julian_form': date_julian_form,
+                                                  'date_julian': date_julian})
+		
+	return render(request, 'astro.html', {'title': title,
+									      'julian_date_form': julian_date_form,
+									      'date_julian_form': date_julian_form})
 
 def DownloadView(request):
 	url = "http://cvillarreal.xyz/astrobits/stuff/download"
@@ -37,7 +68,7 @@ def PhotoView(request):
                                           'pictures': pictures})
 
 def F1View(request):
-	title = "F1 Statistics"
+	title = "F1"
 
 	plot_dnats = dnats(Drivers)
 	plot_cnats = cnats(Constructors)

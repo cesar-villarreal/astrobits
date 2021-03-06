@@ -91,6 +91,15 @@ def dropdown_drivers(Drivers):
 	return Select(options=drivers_names['name'].to_list(),
                   width = 200)
 
+def dropdown_dnats(Drivers):
+	raw_query = 'SELECT driverId, nationality  FROM drivers ORDER BY forename'
+	drivers_names = Drivers.objects.using('f1').raw(raw_query)
+	drivers_names = DataFrame([item.__dict__ for item in drivers_names]).\
+				   drop(columns='_state')
+	
+	return Select(options=drivers_names['nationality'].to_list(),
+                  width = 200)
+
 def driver_position(Drivers, Driverstandings):
 	raw_query = 'SELECT driverStandingsId, S.raceId, position, S.driverId, R.date, CONCAT(forename, " ", surname) AS names FROM driverStandings S INNER JOIN races R ON S.raceId = R.raceId INNER JOIN drivers D ON S.driverId = D.driverId'
 	driver_races = Driverstandings.objects.using('f1').raw(raw_query %locals())

@@ -2,6 +2,10 @@ from django.db import models
 
 # Create your models here.
 
+#class Julian(models.Model):
+	#date_to_jd = models.DateTimeField()
+	#jd_to_date = models.FloatField()
+
 class Picture(models.Model):
 	picture_url = models.CharField(max_length=150)
 	picture_thumbnail = models.CharField(max_length=150)

@@ -7,6 +7,7 @@ Here you will find some of the stuff on what I have been working related to Astr
 
 <br><br><br>
 
+<hr style="height:3px;border-width:0;color:gray;background-color:gray" >
 My list of publications
 <ol>
 	<li> <a href="http://cdsads.u-strasbg.fr/abs/2015RMxAA..51...51P">
@@ -42,11 +43,49 @@ My list of publications
 	Peña, J. H.; Piña, D. S.; Rentería, A.; Villarreal, C.; et al.</a>
 </ol>
 
-<br>
+<br><br>
 
+<hr style="height:3px;border-width:0;color:gray;background-color:gray" >
 <a href="http://cvillarreal.xyz/astrobits/stuff/astro/files/astroimagej_linux.tar.gz">Astroimagej for GNU/Linux</a> |
 <a href="http://cvillarreal.xyz/astrobits/stuff/astro/files/astroimagej_win.zip">Astroimagej for Windows</a> |
 <a href="http://cvillarreal.xyz/astrobits/stuff/astro/files/install.pdf">Installation manual for Astroimagej (spanish)</a>
+
+<br><br><br>
+
+<hr style="height:3px;border-width:0;color:gray;background-color:gray" >
+<form action="{% url 'astro' %}" method="post">
+	{% csrf_token %}
+	{% for date in julian_date_form %}
+		<div class="form-group">
+			<label for="{{ date.name }}"> {{ date.label }} </label>
+				<br>
+				{{ date }}
+		</div>
+	{% endfor %}
+	<button type="submit" class="btn btn-primary bts-sm">Send</button>
+	
+	<br><br>
+	{% if julian_date %}
+		The Julian Date is: {{ julian_date }}
+	{% endif %}
+</form>
+
+<form action="{% url 'astro' %}" method="post">
+	{% csrf_token %}
+	{% for julian in date_julian_form %}
+		<div class="form-group">
+			<label for="{{ julian.name }}"> {{ julian.label }} </label>
+				<br>
+				{{ julian }}
+		</div>
+	{% endfor %}
+	<button type="submit" class="btn btn-primary bts-sm">Send</button>
+	
+	<br><br>
+	{% if date_julian %}
+		The Date is: {{ date_julian }}
+	{% endif %}
+</form>
 
 
 {% endblock %}
