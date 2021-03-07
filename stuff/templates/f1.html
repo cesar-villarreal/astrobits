@@ -6,13 +6,23 @@
 <script src="{% static 'js/bokeh-2.2.3.min.js' %}"></script>
 <script src="{% static 'js/bokeh-widgets-2.2.3.min.js' %}"></script>
 
-{{ script_nats | safe }}
-{{ script_position | safe }}
-{{ script | safe }}
+First steps for an F1 dashboard.
 
-<center> {{ div | safe }} </center>
-<center> {{ div_position | safe }} </center>
-<center> {{ div_nats | safe }} </center>
+<br><br>
+
+{{ script_position | safe }}
+{{ script_nats | safe }}
+
+<center>
+	{{ div_position | safe }}
+</center>
+
+<br><br>
+
+<center>
+	{{ div_nats | safe }}
+</center>
+
 
 {% endblock %}
 

@@ -19,7 +19,7 @@ def dnats(Drivers):
 	dnats['angle'] = dnats['n_nat']/dnats['n_nat'].sum()*2*pi
 	dnats['color'] = list(viridis(41))
 
-	plot_dnats = figure(plot_height = 300, plot_width = 300,
+	plot_dnats = figure(plot_width=400, plot_height=400,
 		title = "F1 Drivers Nationalities",
 		title_location = 'below',
 		toolbar_location = None,
@@ -55,7 +55,7 @@ def cnats(Constructors):
 	cnats['angle'] = cnats['n_nat']/cnats['n_nat'].sum()*2*pi
 	cnats['color'] = list(viridis(24))
 
-	plot_cnats = figure(plot_height = 300, plot_width = 300,
+	plot_cnats = figure(plot_width=400, plot_height=400,
 		title = "F1 Constructors Nationalities",
 		title_location = 'below',
 		toolbar_location = None,
@@ -109,9 +109,9 @@ def driver_position(Drivers, Driverstandings):
 	cds0 = ColumnDataSource(driver_races)
 	cds1 = ColumnDataSource(driver_races)
 
-	plot_driver = figure(plot_height = 300, plot_width = 600,
+	plot_driver = figure(plot_width=800, plot_height=400,
 		title = 'Position Vs Time',
-		title_location = 'below',
+		title_location = 'above',
 		x_axis_type='datetime',
 		tools="pan,wheel_zoom,box_zoom,reset",
 		toolbar_location = 'right',
@@ -122,7 +122,7 @@ def driver_position(Drivers, Driverstandings):
 								  ('Position', '@position{int}')],
                                   formatters = {'@date': 'datetime'})
 	plot_driver.add_tools(hover)
-	#plot_driver.sizing_mode = 'scale_width'
+	#plot_driver.sizing_mode = 'stretch_both'
 	plot_driver.title.align = "center"
 	plot_driver.y_range.flipped = True
 	plot_driver.xaxis.major_label_orientation = 45
