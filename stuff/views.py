@@ -77,7 +77,8 @@ def F1View(request):
                                        theme = 'dark_minimal')
 	script_position, div_position = driver_position(Drivers, Driverstandings)
 
-	return render(request, 'f1.html', {'script_nats': script_nats,
+	return render(request, 'f1.html', {'title': title,
+									   'script_nats': script_nats,
 									   'div_nats': div_nats,
 									   'script_position': script_position,
 									   'div_position': div_position,
