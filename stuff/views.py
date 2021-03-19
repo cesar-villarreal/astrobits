@@ -68,7 +68,7 @@ def PhotoView(request):
                                           'pictures': pictures})
 
 def F1View(request):
-	title = "F1"
+	title = "Formula One"
 
 	plot_dnats = dnats(Drivers)
 	plot_cnats = cnats(Constructors)
